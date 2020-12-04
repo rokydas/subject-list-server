@@ -23,6 +23,7 @@ const uri = `mongodb+srv://${user}:${password}@cluster0.muwip.mongodb.net/${dbNa
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
     const subjectCollection = client.db(`${dbName}`).collection('subjects');
+    const adminCollection = client.db(`${dbName}`).collection('admin');
 
     app.get('/', (req, res) => {
         res.send('Hello I am your new node js project');
@@ -30,6 +31,13 @@ client.connect(err => {
 
     app.get('/subjects', (req, res) => {
         subjectCollection.find({})
+            .toArray((err, documents) => {
+                res.send(documents);
+            })
+    })
+
+    app.get('/admin', (req, res) => {
+        adminCollection.find({})
             .toArray((err, documents) => {
                 res.send(documents);
             })
